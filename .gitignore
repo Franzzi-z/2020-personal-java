@@ -10,6 +10,8 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
+*.json
+*.txt
 .idea
 build
 .gradle
