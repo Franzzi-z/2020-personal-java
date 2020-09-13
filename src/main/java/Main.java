@@ -56,8 +56,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-
-
         boolean init = false;
         String dictAdress = "";
         boolean user = false;
@@ -66,7 +64,6 @@ public class Main {
         boolean event = false;
         String eventName = "";
         boolean repo = false;
-        String jarName = "";
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-i") || args[i].equals("--init")) {
                 init = true;
@@ -75,12 +72,10 @@ public class Main {
             if (args[i].equals("-u") || args[i].equals("--user")) {
                 user = true;
                 userName = args[i + 1];
-
             }
             if (args[i].equals("-e") || args[i].equals("--event")) {
                 event = true;
                 eventName = args[i + 1];
-
             }
             if (args[i].equals("-r") || args[i].equals("--repo")) {
                 repo = true;
@@ -93,7 +88,6 @@ public class Main {
         }
 
         if (init) {
-
             String fileName = getNameFromOneJsonFile(dictAdress);
             getJsonFile(fileName);
         }
@@ -102,9 +96,11 @@ public class Main {
 
             System.out.println(find1(userName, eventName));
         }
+
         if (user && repo) {
             System.out.println(find3(userName, repoName, eventName));
         }
+
         if (repo && !user) {
             System.out.println(find2(repoName, eventName));
         }
@@ -114,47 +110,36 @@ public class Main {
         String str = readJsonFile("1.txt");
         String[] piece = str.split(", ");
         for (String item : piece) {
-
             String[] i = item.split("=");
             String str1 = userName + eventName;
-//
             if (i[0].equals(str1)) return Integer.parseInt(i[1]);
         }
         return 0;
-
     }
 
     public static Integer find2(String repoName, String eventName) {
         String str = readJsonFile("2.txt");
         String[] piece = str.split(", ");
         for (String item : piece) {
-
             String[] i = item.split("=");
             String str1 = repoName + eventName;
-//
             if (i[0].equals(str1)) return Integer.parseInt(i[1]);
         }
         return 0;
-
     }
 
     public static Integer find3(String userName, String repoName, String eventName) {
         String str = readJsonFile("3.txt");
         String[] piece = str.split(", ");
         for (String item : piece) {
-
             String[] i = item.split("=");
             String str1 = userName + repoName + eventName;
-//
             if (i[0].equals(str1)) return Integer.parseInt(i[1]);
         }
         return 0;
-
     }
 
     public static void getJsonFile(String dict_address) throws IOException {
-
-//            String fileName = scanDir(dict_address);
 
         String str = readJsonFile(dict_address);
 
@@ -162,15 +147,11 @@ public class Main {
 
         String[] items = str.split("\n");
 
-
         Map<String, Integer> map1 = new HashMap<>();
         Map<String, Integer> map2 = new HashMap<>();
         Map<String, Integer> map3 = new HashMap<>();
         for (int i = 0; i < items.length; ++i) {
             User user = mapper.readValue(items[i], User.class);
-//                System.out.println(user.type);
-//                System.out.println(user.actor.login);
-//                System.out.println(user.repo.name);
 
             String str1 = user.actor.login + user.type;
             if (map1.containsKey(str1)) {
@@ -183,14 +164,14 @@ public class Main {
                 Integer z = map2.get(str2);
                 map2.put(str2, z + 1);
             } else map2.put(str2, 1);
+
             String str3 = user.actor.login + user.repo.name + user.type;
             if (map3.containsKey(str3)) {
                 Integer o = map3.get(str3);
                 map3.put(str3, o + 1);
             } else map3.put(str3, 1);
         }
-
-        // map1 fw
+        //写入文件
         FileWriter fw = null;
         fw = new FileWriter("1.txt");
         fw.write(map1.toString().substring(1, map1.toString().length() - 1));
@@ -199,7 +180,6 @@ public class Main {
         fw = new FileWriter("3.txt");
         fw.write(map3.toString().substring(1, map3.toString().length() - 1));
         fw.close();
-
 
     }
 
@@ -210,7 +190,6 @@ public class Main {
         } else {
             //首先将第一层目录扫描一遍
             File[] files = directory.listFiles();
-            //遍历扫出的文件数组，如果是文件夹，将其放入到linkedList中稍后处理
             for (int i = 0; i < files.length; i++) {
                     if (files[i].getName().startsWith(".")){
                         continue;
